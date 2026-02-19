@@ -28,23 +28,31 @@ addBtn.addEventListener('click', () => {
         </div>
     `;
 
-    // 체크박스 토글 (완료/취소)
     const checkbox = li.querySelector('.checkbox');
     checkbox.addEventListener('change', () => {
-        li.classList.toggle('completed');
+        if (checkbox.checked) {
+            li.classList.add('completed');
+            // 체크하면 맨 아래로 이동
+            todoList.appendChild(li);
+        } else {
+            li.classList.remove('completed');
+            // 체크 해제하면 맨 위로 이동 (또는 원하는 위치로 드래그 가능)
+            todoList.prepend(li);
+        }
     });
 
-    // 드래그 앤 드롭 로직
+    // 드래그 기능
     li.addEventListener('dragstart', () => li.classList.add('dragging'));
     li.addEventListener('dragend', () => li.classList.remove('dragging'));
 
-    todoList.appendChild(li);
+    todoList.prepend(li); // 새 할 일은 맨 위에 추가
 
     input.value = '';
     dateInput.value = '';
     priorityInput.value = '1';
 });
 
+// 드래그 앤 드롭 순서 변경
 todoList.addEventListener('dragover', e => {
     e.preventDefault();
     const draggingItem = document.querySelector('.dragging');
