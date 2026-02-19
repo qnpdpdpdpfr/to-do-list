@@ -31,6 +31,12 @@
                     </select>
                 </div>
             </div>
+            <div class="priority-guide">
+                <span>중요도: </span>
+                <span class="guide-item"><span class="box p1"></span> 1단계(낮음)</span>
+                <span class="guide-item"><span class="box p2"></span> 2단계(보통)</span>
+                <span class="guide-item"><span class="box p3"></span> 3단계(높음)</span>
+            </div>
             <button id="add-btn">추가하기</button>
         </div>
 
@@ -44,12 +50,17 @@
             <button id="delete-mode-btn" title="삭제하기">🗑️</button>
         </div>
 
+        <div id="select-all-wrapper" class="hidden">
+            <input type="checkbox" id="select-all-checkbox">
+            <label for="select-all-checkbox">모두 선택</label>
+        </div>
+
         <ul id="todo-list"></ul>
 
         <div id="delete-actions" class="hidden">
             <p>삭제할 항목을 선택하세요</p>
             <div class="action-buttons">
-                <button id="confirm-delete-btn">선택 삭제</button>
+                <button id="confirm-delete-btn">삭제</button>
                 <button id="cancel-delete-btn">취소</button>
             </div>
         </div>
