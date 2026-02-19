@@ -1,114 +1,38 @@
-body {
-    font-family: 'Pretendard', sans-serif;
-    background-color: #f8f9fa;
-    display: flex;
-    justify-content: center;
-    padding: 50px 20px;
-}
+body { font-family: 'Pretendard', sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 40px; }
+.container { background: white; padding: 30px; border-radius: 16px; width: 100%; max-width: 500px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+h1 { text-align: center; }
 
-.container {
-    background: white;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    width: 100%;
-    max-width: 450px;
-}
+.input-section { display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
+.options-group { display: flex; gap: 10px; }
+.option-item { flex: 1; display: flex; flex-direction: column; font-size: 0.8rem; }
 
-h1 {
-    text-align: center;
-    margin-bottom: 24px;
-    color: #333;
-}
+#add-btn { padding: 12px; background: #333; color: white; border: none; border-radius: 8px; cursor: pointer; }
 
-.input-section {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-bottom: 30px;
-}
-
-.options-group {
-    display: flex;
-    gap: 10px;
-}
-
-.option-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.option-item label {
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: #666;
-}
-
-input, select, button {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #dee2e6;
-    outline: none;
-}
-
-#add-btn {
-    background-color: #333;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    padding: 12px;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
+ul { list-style: none; padding: 0; }
 
 li {
     background: #fff;
-    border: 1px solid #f1f3f5;
-    margin-bottom: 12px;
-    padding: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 12px;
-}
-
-.priority-1 { border-left: 6px solid #28a745; }
-.priority-2 { border-left: 6px solid #ffc107; }
-.priority-3 { border-left: 6px solid #dc3545; }
-
-.todo-info {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.todo-details {
-    display: flex;
-    gap: 12px;
-    font-size: 0.8rem;
-    color: #666;
-}
-
-.check-btn {
-    background: none;
-    border: 2px solid #adb5bd;
-    color: #adb5bd;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 15px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    border-radius: 8px;
+    cursor: grab; /* 순서 변경 가능 표시 */
 }
 
-.check-btn:hover {
-    border-color: #28a745;
-    color: #28a745;
-}
+/* 1. 중요도 색상 표시 */
+li.priority-1 { border-left: 10px solid #28a745; } /* 초록 */
+li.priority-2 { border-left: 10px solid #ffc107; } /* 노랑 */
+li.priority-3 { border-left: 10px solid #dc3545; } /* 빨강 */
+
+/* 2. 완료(체크) 시 스타일 */
+li.completed { opacity: 0.5; text-decoration: line-through; background: #f9f9f9; }
+
+.todo-content { flex: 1; display: flex; justify-content: space-between; align-items: center; margin: 0 15px; }
+.todo-info-text { display: flex; flex-direction: column; }
+
+/* 3. 리스트 옆에 마감기한/중요도 표시 */
+.meta-info { font-size: 0.75rem; color: #777; margin-top: 4px; }
+
+.check-btn { cursor: pointer; width: 20px; height: 20px; }
