@@ -18,19 +18,18 @@ body { font-family: sans-serif; background-color: var(--bg-color); color: var(--
 
 .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
 
-
 #dark-mode-toggle { 
     background-color: var(--input-bg);
     color: var(--text-color);
     border: 1px solid var(--border-color);
-    padding: 8px 12px; 
-    border-radius: 6px;
+    padding: 6px 10px; 
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 0.9rem; 
+    font-size: 0.85rem; 
     font-weight: bold;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
 }
 
 .priority-guide { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; font-size: 0.7rem; opacity: 0.8; }
@@ -43,46 +42,30 @@ body { font-family: sans-serif; background-color: var(--bg-color); color: var(--
 
 .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 
-
 #delete-mode-btn { 
     background-color: var(--input-bg);
     border: 1px solid var(--border-color); 
     cursor: pointer; 
-    padding: 4px 10px; 
-    border-radius: 6px; 
-    font-size: 1.2rem; 
+    padding: 3px 8px; 
+    border-radius: 5px; 
+    font-size: 1rem; 
     color: var(--text-color); 
 }
 
-
 .checkbox, .del-checkbox, #select-all-checkbox { 
-    width: 22px !important; 
-    height: 22px !important; 
+    width: 20px !important; 
+    height: 20px !important; 
     cursor: pointer; 
     margin-right: 12px; 
 }
 
-#select-all-wrapper { display: flex; align-items: center; margin-bottom: 10px; font-size: 0.95rem; font-weight: bold; color: #dc3545; gap: 8px; }
+#select-all-wrapper { display: flex; align-items: center; margin-bottom: 10px; font-size: 0.9rem; font-weight: bold; color: #dc3545; gap: 8px; }
 
 .input-section { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
 .options-group { display: flex; gap: 10px; }
 .option-item { flex: 1; display: flex; flex-direction: column; font-size: 0.8rem; font-weight: bold; }
-input, select { background-color: var(--input-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px; }
-#add-btn { background: #333; color: white; cursor: pointer; font-weight: bold; border: none; padding: 10px; border-radius: 6px; font-size: 1rem; }
+input, select { background-color: var(--input-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px; font-size: 0.9rem; }
+#add-btn { background: #333; color: white; cursor: pointer; font-weight: bold; border: none; padding: 10px; border-radius: 6px; font-size: 0.95rem; }
 
 ul { list-style: none; padding: 0; }
-li { background-color: var(--container-bg); border: 1px solid var(--border-color); margin-bottom: 8px; padding: 12px; display: flex; align-items: center; border-radius: 8px; }
-li.priority-1 { border-left: 8px solid #28a745; }
-li.priority-2 { border-left: 8px solid #ffc107; }
-li.priority-3 { border-left: 8px solid #dc3545; }
-li.completed { opacity: 0.4; }
-
-.todo-content { flex: 1; display: flex; justify-content: space-between; align-items: center; }
-.todo-text { font-weight: bold; font-size: 1rem; }
-.d-day { color: #dc3545; font-weight: bold; font-size: 0.9rem; }
-
-.hidden { display: none !important; }
-#delete-actions { margin-top: 15px; padding: 12px; background: rgba(220, 53, 69, 0.1); border-radius: 8px; text-align: center; }
-.action-buttons { display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
-#confirm-delete-btn { background: #dc3545; color: white; border: none; cursor: pointer; padding: 8px 20px; border-radius: 6px; font-weight: bold; }
-#cancel-delete-btn { background: #666; color: white; border: none; cursor: pointer; padding: 8px 20px; border-radius: 6px; font-weight: bold; }
+li { background-color: var(--container-bg); border: 1px solid var(--border-color); margin-bottom: 8px; padding: 12px; display: flex; align
