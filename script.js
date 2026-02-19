@@ -8,9 +8,14 @@ addBtn.addEventListener('click', () => {
     const text = input.value;
     const date = dateInput.value;
     const priority = priorityInput.value;
+    
+    let priorityText = '';
+    if (priority === '1') priorityText = '낮음';
+    else if (priority === '2') priorityText = '보통';
+    else if (priority === '3') priorityText = '높음';
 
     if (!text || !date) {
-        alert('내용과 날짜를 확인해주세요.');
+        alert('할 일과 마감 기한을 모두 입력해주세요.');
         return;
     }
 
@@ -20,7 +25,10 @@ addBtn.addEventListener('click', () => {
     li.innerHTML = `
         <div class="todo-info">
             <span class="text"><strong>${text}</strong></span>
-            <span class="date">Due: ${date}</span>
+            <div class="todo-details">
+                <span>📅 마감 기한: ${date}</span>
+                <span>⭐ 중요도: ${priorityText}</span>
+            </div>
         </div>
         <button class="check-btn">✔</button>
     `;
