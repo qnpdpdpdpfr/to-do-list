@@ -14,7 +14,7 @@ input, select, button { padding: 10px; border-radius: 6px; border: 1px solid #dd
 
 #add-btn { background: #333; color: white; cursor: pointer; border: none; font-weight: bold; margin-top: 5px; }
 
-ul { list-style: none; padding: 0; }
+ul { list-style: none; padding: 0; display: flex; flex-direction: column; }
 li {
     background: #fff;
     border: 1px solid #eee;
@@ -23,14 +23,13 @@ li {
     display: flex;
     align-items: center;
     border-radius: 6px;
-    transition: transform 0.2s;
 }
 
 li.priority-1 { border-left: 8px solid #28a745; }
 li.priority-2 { border-left: 8px solid #ffc107; }
 li.priority-3 { border-left: 8px solid #dc3545; }
 
-li.completed { opacity: 0.5; background: #f9f9f9; }
+li.completed { opacity: 0.5; background: #f9f9f9; order: 9999; }
 li.completed .todo-text { text-decoration: line-through; }
 
 .handle { cursor: grab; margin-right: 15px; color: #ccc; font-size: 1.2rem; user-select: none; }
