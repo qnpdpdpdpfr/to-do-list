@@ -1,28 +1,22 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title>To-do Goal App</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Goal Manager</h1>
 
-    <div class="input-box">
-      <input type="text" id="todo-input" placeholder="목표를 입력하세요" />
-      <button id="add-btn">추가</button>
+    <div class="container">
+        <h1>My To-Do List</h1>
+        <div class="input-group">
+            <input type="text" id="todo-input" placeholder="할 일을 입력하세요!">
+            <button id="add-btn">추가</button>
+        </div>
+        <ul id="todo-list">
+            </ul>
     </div>
 
-    <div class="filter">
-      <button data-filter="all">전체</button>
-      <button data-filter="active">미완료</button>
-      <button data-filter="done">완료</button>
-    </div>
-
-    <ul id="todo-list"></ul>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
