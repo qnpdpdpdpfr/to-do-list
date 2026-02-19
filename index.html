@@ -19,7 +19,7 @@
             <input type="text" id="todo-input" placeholder="할 일을 입력하세요">
             <div class="options-group">
                 <div class="option-item">
-                    <label>마감 기한 (선택)</label>
+                    <label>마감 기한</label>
                     <input type="date" id="todo-date">
                 </div>
                 <div class="option-item">
@@ -31,12 +31,6 @@
                     </select>
                 </div>
             </div>
-            <div class="priority-guide">
-                <span>중요도: </span>
-                <span class="guide-item"><span class="box p1"></span> 1단계(낮음)</span>
-                <span class="guide-item"><span class="box p2"></span> 2단계(보통)</span>
-                <span class="guide-item"><span class="box p3"></span> 3단계(높음)</span>
-            </div>
             <button id="add-btn">추가하기</button>
         </div>
 
@@ -47,9 +41,18 @@
                 <option value="2">2단계</option>
                 <option value="3">3단계</option>
             </select>
+            <button id="delete-mode-btn" title="삭제하기">🗑️</button>
         </div>
 
         <ul id="todo-list"></ul>
+
+        <div id="delete-actions" class="hidden">
+            <p>삭제할 항목을 선택하세요</p>
+            <div class="action-buttons">
+                <button id="confirm-delete-btn">선택 삭제</button>
+                <button id="cancel-delete-btn">취소</button>
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
