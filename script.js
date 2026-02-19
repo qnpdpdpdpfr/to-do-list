@@ -4,120 +4,110 @@ const priorityInput = document.getElementById('todo-priority');
 const addBtn = document.getElementById('add-btn');
 const todoList = document.getElementById('todo-list');
 const listFilter = document.getElementById('list-filter');
-const darkModeToggle = document.getElementById('dark-mode-toggle');
-const modeIcon = document.getElementById('mode-icon');
-const modeText = document.getElementById('mode-text');
+const deleteModeBtn = document.getElementById('delete-mode-btn');
+const deleteActions = document.getElementById('delete-actions');
+const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
 
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
+let isDeleteMode = false;
 
+
+const darkModeToggle = document.getElementById('dark-mode-toggle');
 function updateDarkModeUI(isDark) {
-    if (isDark) {
-        document.body.setAttribute('data-theme', 'dark');
-        modeIcon.textContent = '☀️';
-        modeText.textContent = '라이트모드';
-        localStorage.setItem('darkMode', 'enabled');
-    } else {
-        document.body.removeAttribute('data-theme');
-        modeIcon.textContent = '🌙';
-        modeText.textContent = '다크모드';
-        localStorage.setItem('darkMode', 'disabled');
-    }
+    document.body.setAttribute('data-theme', isDark ? 'dark' : '');
+    document.getElementById('mode-icon').textContent = isDark ? '☀️' : '🌙';
+    document.getElementById('mode-text').textContent = isDark ? '라이트모드' : '다크모드';
+    localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
 }
+updateDarkModeUI(localStorage.getItem('darkMode') === 'enabled');
+darkModeToggle.addEventListener('click', () => updateDarkModeUI(document.body.getAttribute('data-theme') !== 'dark'));
 
-const savedDarkMode = localStorage.getItem('darkMode') === 'enabled';
-updateDarkModeUI(savedDarkMode);
-
-darkModeToggle.addEventListener('click', () => {
-    const isNowDark = document.body.getAttribute('data-theme') !== 'dark';
-    updateDarkModeUI(isNowDark);
-});
-
-function saveTodos() {
-    localStorage.setItem('todos', JSON.stringify(todos));
-}
 
 function getDDay(targetDate) {
     if (!targetDate) return "";
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const target = new Date(targetDate);
-    target.setHours(0, 0, 0, 0);
-    const diff = target - today;
+    const diff = new Date(targetDate).setHours(0,0,0,0) - new Date().setHours(0,0,0,0);
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-    if (days === 0) return "D-Day";
-    return days > 0 ? `D-${days}` : `D+${Math.abs(days)}`;
+    return days === 0 ? "D-Day" : (days > 0 ? `D-${days}` : `D+${Math.abs(days)}`);
 }
+
 
 function renderTodos() {
     todoList.innerHTML = '';
-    const filterValue = listFilter.value;
-
+    const filter = listFilter.value;
+    
     todos.forEach((todo, index) => {
-        if (filterValue !== 'all' && todo.priority !== filterValue) return;
+        if (filter !== 'all' && todo.priority !== filter) return;
 
         const li = document.createElement('li');
         li.className = `priority-${todo.priority} ${todo.completed ? 'completed' : ''}`;
-        li.draggable = true;
-
-        const dDayText = getDDay(todo.date);
+        
+        // 삭제 모드일 때와 일반 모드일 때의 체크박스 로직 구분
+        const checkboxHTML = isDeleteMode 
+            ? `<input type="checkbox" class="del-checkbox" data-index="${index}">`
+            : `<input type="checkbox" class="checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleComplete(${index})">`;
 
         li.innerHTML = `
-            <div class="handle">≡</div>
-            <input type="checkbox" class="checkbox" ${todo.completed ? 'checked' : ''}>
+            ${isDeleteMode ? '' : '<div class="handle">≡</div>'}
+            ${checkboxHTML}
             <div class="todo-content">
                 <div class="todo-info">
                     <span class="todo-text">${todo.text}</span>
-                    ${todo.date ? `<span class="todo-date">마감: ${todo.date}</span>` : ""}
+                    ${todo.date ? `<span style="font-size:0.7rem; opacity:0.6">마감: ${todo.date}</span>` : ""}
                 </div>
-                ${todo.date ? `<span class="d-day">${dDayText}</span>` : ""}
+                <span class="d-day">${getDDay(todo.date)}</span>
             </div>
         `;
-
-        const checkbox = li.querySelector('.checkbox');
-        checkbox.addEventListener('change', () => {
-            todo.completed = checkbox.checked;
-            const currentItem = todos.splice(index, 1)[0];
-            if (todo.completed) {
-                todos.push(currentItem);
-            } else {
-                todos.unshift(currentItem);
-            }
-            saveTodos();
-            renderTodos();
-        });
-
-        li.addEventListener('dragstart', () => li.classList.add('dragging'));
-        li.addEventListener('dragend', () => li.classList.remove('dragging'));
-
         todoList.appendChild(li);
     });
 }
 
-addBtn.addEventListener('click', () => {
-    if (!input.value) return alert('할 일을 입력해주세요.');
-    const newTodo = {
-        text: input.value,
-        date: dateInput.value,
-        priority: priorityInput.value,
-        completed: false
-    };
-    todos.unshift(newTodo);
-    saveTodos();
+
+window.toggleComplete = (index) => {
+    todos[index].completed = !todos[index].completed;
+    const item = todos.splice(index, 1)[0];
+    item.completed ? todos.push(item) : todos.unshift(item);
+    saveAndRender();
+};
+
+function saveAndRender() {
+    localStorage.setItem('todos', JSON.stringify(todos));
     renderTodos();
+}
+
+
+deleteModeBtn.addEventListener('click', () => {
+    isDeleteMode = true;
+    deleteActions.classList.remove('hidden');
+    renderTodos();
+});
+
+cancelDeleteBtn.addEventListener('click', () => {
+    isDeleteMode = false;
+    deleteActions.classList.add('hidden');
+    renderTodos();
+});
+
+confirmDeleteBtn.addEventListener('click', () => {
+    const selectedCheckboxes = document.querySelectorAll('.del-checkbox:checked');
+    if (selectedCheckboxes.length === 0) return alert('삭제할 항목을 선택하세요.');
+
+    if (confirm('선택한 항목을 삭제하시겠습니까?')) {
+        const indicesToDelete = Array.from(selectedCheckboxes).map(cb => parseInt(cb.dataset.index));
+        // 인덱스가 꼬이지 않게 뒤에서부터 삭제
+        indicesToDelete.sort((a, b) => b - a).forEach(index => todos.splice(index, 1));
+        isDeleteMode = false;
+        deleteActions.classList.add('hidden');
+        saveAndRender();
+    }
+});
+
+addBtn.addEventListener('click', () => {
+    if (!input.value) return alert('할 일을 입력하세요');
+    todos.unshift({ text: input.value, date: dateInput.value, priority: priorityInput.value, completed: false });
     input.value = '';
-    dateInput.value = '';
+    saveAndRender();
 });
 
 listFilter.addEventListener('change', renderTodos);
-
-todoList.addEventListener('dragover', e => {
-    e.preventDefault();
-    const draggingItem = document.querySelector('.dragging');
-    const siblings = [...todoList.querySelectorAll('li:not(.dragging)')];
-    const nextSibling = siblings.find(sibling => {
-        return e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2;
-    });
-    todoList.insertBefore(draggingItem, nextSibling);
-});
-
 renderTodos();
