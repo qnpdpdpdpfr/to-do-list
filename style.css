@@ -1,49 +1,97 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Pretendard', sans-serif;
+    background-color: #f8f9fa;
     display: flex;
     justify-content: center;
-    padding-top: 50px;
+    padding: 50px 20px;
 }
 
 .container {
     background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    width: 300px;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 400px;
 }
 
-h1 { text-align: center; color: #333; }
-
-.input-group { display: flex; gap: 5px; }
-
-input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+.input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
 }
 
-button {
-    padding: 10px;
-    background-color: #28a745;
+.options {
+    display: flex;
+    gap: 8px;
+}
+
+input, select, button {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    outline: none;
+}
+
+#add-btn {
+    background-color: #333;
     color: white;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
+    font-weight: 600;
 }
 
-button:hover { background-color: #218838; }
+#add-btn:hover {
+    background-color: #000;
+}
 
-ul { list-style: none; padding: 0; margin-top: 20px; }
+ul {
+    list-style: none;
+    padding: 0;
+}
 
 li {
-    background: #eee;
-    margin-bottom: 5px;
-    padding: 10px;
+    background: #fff;
+    border: 1px solid #f1f3f5;
+    margin-bottom: 12px;
+    padding: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 5px;
+    border-radius: 12px;
+}
+
+.priority-1 { border-left: 6px solid #28a745; }
+.priority-2 { border-left: 6px solid #ffc107; }
+.priority-3 { border-left: 6px solid #dc3545; }
+
+.todo-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.todo-info .date {
+    font-size: 0.75rem;
+    color: #adb5bd;
+}
+
+.check-btn {
+    background: none;
+    border: 2px solid #adb5bd;
+    color: #adb5bd;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.check-btn:hover {
+    border-color: #28a745;
+    color: #28a745;
 }
