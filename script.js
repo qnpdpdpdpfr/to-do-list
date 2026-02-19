@@ -49,17 +49,17 @@ addBtn.addEventListener('click', () => {
     checkbox.addEventListener('change', () => {
         if (checkbox.checked) {
             li.classList.add('completed');
-            todoList.appendChild(li);
+            todoList.insertAdjacentElement('beforeend', li);
         } else {
             li.classList.remove('completed');
-            todoList.prepend(li);
+            todoList.insertAdjacentElement('afterbegin', li);
         }
     });
 
     li.addEventListener('dragstart', () => li.classList.add('dragging'));
     li.addEventListener('dragend', () => li.classList.remove('dragging'));
 
-    todoList.prepend(li);
+    todoList.insertAdjacentElement('afterbegin', li);
 
     input.value = '';
     dateInput.value = '';
