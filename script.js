@@ -8,8 +8,10 @@ const darkModeToggle = document.getElementById('dark-mode-toggle');
 const modeIcon = document.getElementById('mode-icon');
 const modeText = document.getElementById('mode-text');
 
+
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
+// 다크모드 설정 함수
 function updateDarkModeUI(isDark) {
     if (isDark) {
         document.body.setAttribute('data-theme', 'dark');
@@ -24,6 +26,7 @@ function updateDarkModeUI(isDark) {
     }
 }
 
+
 const savedDarkMode = localStorage.getItem('darkMode') === 'enabled';
 updateDarkModeUI(savedDarkMode);
 
@@ -36,6 +39,7 @@ function saveTodos() {
     localStorage.setItem('todos', JSON.stringify(todos));
 }
 
+// D-Day
 function getDDay(targetDate) {
     if (!targetDate) return "";
     const today = new Date();
@@ -48,6 +52,7 @@ function getDDay(targetDate) {
     return days > 0 ? `D-${days}` : `D+${Math.abs(days)}`;
 }
 
+// 할 일 목록
 function renderTodos() {
     todoList.innerHTML = '';
     const filterValue = listFilter.value;
@@ -59,13 +64,15 @@ function renderTodos() {
         li.className = `priority-${todo.priority} ${todo.completed ? 'completed' : ''}`;
         li.draggable = true;
 
+        const dDayDisplay = todo.date ? `<span class="d-day">${getDDay(todo.date)}</span>` : "";
+
         li.innerHTML = `
             <div class="handle">≡</div>
             <input type="checkbox" class="checkbox" ${todo.completed ? 'checked' : ''}>
             <div class="todo-content">
                 <div class="todo-header">
                     <span class="todo-text">${todo.text}</span>
-                    ${todo.date ? `<span class="d-day">${getDDay(todo.date)}</span>` : ""}
+                    ${dDayDisplay}
                 </div>
                 ${todo.date ? `<div class="todo-date">마감: ${todo.date}</div>` : ""}
             </div>
@@ -74,12 +81,12 @@ function renderTodos() {
         const checkbox = li.querySelector('.checkbox');
         checkbox.addEventListener('change', () => {
             todo.completed = checkbox.checked;
+            // 체크하면 배열 조작해서 맨 뒤나 맨 앞으로
+            const currentItem = todos.splice(index, 1)[0];
             if (todo.completed) {
-                const item = todos.splice(index, 1)[0];
-                todos.push(item);
+                todos.push(currentItem);
             } else {
-                const item = todos.splice(index, 1)[0];
-                todos.unshift(item);
+                todos.unshift(currentItem);
             }
             saveTodos();
             renderTodos();
@@ -92,6 +99,7 @@ function renderTodos() {
     });
 }
 
+// 추가 버튼
 addBtn.addEventListener('click', () => {
     if (!input.value) return alert('할 일을 입력해주세요.');
     const newTodo = {
@@ -109,6 +117,7 @@ addBtn.addEventListener('click', () => {
 
 listFilter.addEventListener('change', renderTodos);
 
+// 목록 순서 조정
 todoList.addEventListener('dragover', e => {
     e.preventDefault();
     const draggingItem = document.querySelector('.dragging');
