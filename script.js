@@ -14,7 +14,6 @@ const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
 let isDeleteMode = false;
 
-// 다크모드
 const darkModeToggle = document.getElementById('dark-mode-toggle');
 function updateDarkModeUI(isDark) {
     document.body.setAttribute('data-theme', isDark ? 'dark' : '');
@@ -38,14 +37,11 @@ function renderTodos() {
     
     todos.forEach((todo, index) => {
         if (filter !== 'all' && todo.priority !== filter) return;
-
         const li = document.createElement('li');
         li.className = `priority-${todo.priority} ${todo.completed ? 'completed' : ''}`;
-        
         const checkboxHTML = isDeleteMode 
             ? `<input type="checkbox" class="del-checkbox" data-index="${index}">`
             : `<input type="checkbox" class="checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleComplete(${index})">`;
-
         li.innerHTML = `
             ${checkboxHTML}
             <div class="todo-content">
@@ -72,19 +68,15 @@ function saveAndRender() {
     renderTodos();
 }
 
-// 삭제 모드
 deleteModeBtn.addEventListener('click', () => {
     isDeleteMode = true;
     deleteActions.classList.remove('hidden');
     selectAllWrapper.classList.remove('hidden');
-    selectAllCheckbox.checked = false;
     renderTodos();
 });
 
-
 selectAllCheckbox.addEventListener('change', () => {
-    const delCheckboxes = document.querySelectorAll('.del-checkbox');
-    delCheckboxes.forEach(cb => cb.checked = selectAllCheckbox.checked);
+    document.querySelectorAll('.del-checkbox').forEach(cb => cb.checked = selectAllCheckbox.checked);
 });
 
 cancelDeleteBtn.addEventListener('click', () => {
@@ -96,8 +88,7 @@ cancelDeleteBtn.addEventListener('click', () => {
 
 confirmDeleteBtn.addEventListener('click', () => {
     const selected = document.querySelectorAll('.del-checkbox:checked');
-    if (selected.length === 0) return alert('삭제할 항목을 선택하세요.');
-
+    if (selected.length === 0) return alert('항목을 선택하세요.');
     if (confirm('정말 삭제하시겠습니까?')) {
         const indices = Array.from(selected).map(cb => parseInt(cb.dataset.index)).sort((a,b)=>b-a);
         indices.forEach(i => todos.splice(i, 1));
