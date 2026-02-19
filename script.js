@@ -3,9 +3,7 @@ const dateInput = document.getElementById('todo-date');
 const priorityInput = document.getElementById('todo-priority');
 const addBtn = document.getElementById('add-btn');
 const todoList = document.getElementById('todo-list');
-const filterBtns = document.querySelectorAll('.filter-btn');
-
-let currentFilter = 'all';
+const listFilter = document.getElementById('list-filter');
 
 function getDDay(targetDate) {
     if (!targetDate) return "";
@@ -19,12 +17,12 @@ function getDDay(targetDate) {
     return days > 0 ? `D-${days}` : `D+${Math.abs(days)}`;
 }
 
-
 function applyFilter() {
+    const filterValue = listFilter.value;
     const items = todoList.querySelectorAll('li');
     items.forEach(item => {
         const itemPriority = item.getAttribute('data-priority');
-        if (currentFilter === 'all' || itemPriority === currentFilter) {
+        if (filterValue === 'all' || itemPriority === filterValue) {
             item.style.display = 'flex';
         } else {
             item.style.display = 'none';
@@ -45,7 +43,7 @@ addBtn.addEventListener('click', () => {
 
     const li = document.createElement('li');
     li.className = `priority-${priority}`;
-    li.setAttribute('data-priority', priority); 
+    li.setAttribute('data-priority', priority);
     li.draggable = true;
 
     li.innerHTML = `
@@ -69,29 +67,21 @@ addBtn.addEventListener('click', () => {
             li.classList.remove('completed');
             todoList.prepend(li);
         }
-        applyFilter(); 
+        applyFilter();
     });
 
     li.addEventListener('dragstart', () => li.classList.add('dragging'));
     li.addEventListener('dragend', () => li.classList.remove('dragging'));
 
     todoList.prepend(li);
-    applyFilter(); 
+    applyFilter();
 
     input.value = '';
     dateInput.value = '';
     priorityInput.value = '1';
 });
 
-
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.getAttribute('data-filter');
-        applyFilter();
-    });
-});
+listFilter.addEventListener('change', applyFilter);
 
 todoList.addEventListener('dragover', e => {
     e.preventDefault();
