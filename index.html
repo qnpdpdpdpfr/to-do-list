@@ -10,7 +10,9 @@
     <div class="container">
         <div class="header-row">
             <h1>To-Do List</h1>
-            <button id="dark-mode-toggle">🌙</button>
+            <button id="dark-mode-toggle">
+                <span id="mode-icon">🌙</span> <span id="mode-text">다크모드</span>
+            </button>
         </div>
         
         <div class="input-section">
@@ -31,9 +33,9 @@
             </div>
             <div class="priority-guide">
                 <span>중요도: </span>
-                <span class="guide-item"><span class="box p1"></span> 1단계</span>
-                <span class="guide-item"><span class="box p2"></span> 2단계</span>
-                <span class="guide-item"><span class="box p3"></span> 3단계</span>
+                <span class="guide-item"><span class="box p1"></span> 1단계(낮음)</span>
+                <span class="guide-item"><span class="box p2"></span> 2단계(보통)</span>
+                <span class="guide-item"><span class="box p3"></span> 3단계(높음)</span>
             </div>
             <button id="add-btn">추가하기</button>
         </div>
