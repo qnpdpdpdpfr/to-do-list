@@ -8,43 +8,46 @@ addBtn.addEventListener('click', () => {
     const text = input.value;
     const date = dateInput.value;
     const priority = priorityInput.value;
-    
-    let priorityText = '';
-    if (priority === '1') priorityText = '낮음';
-    else if (priority === '2') priorityText = '보통';
-    else if (priority === '3') priorityText = '높음';
+    const priorityLabel = priority === '1' ? '낮음' : priority === '2' ? '보통' : '높음';
 
     if (!text || !date) {
-        alert('할 일과 마감 기한을 입력해주세요.');
+        alert('내용과 날짜를 입력하세요.');
         return;
     }
 
     const li = document.createElement('li');
     li.classList.add(`priority-${priority}`);
+    li.draggable = true; // 4. 순서 변경을 위한 드래그 설정
 
     li.innerHTML = `
-        <div class="todo-info">
-            <span class="text"><strong>${text}</strong></span>
-            <div class="todo-details">
-                <span>📅 마감 기한: ${date}</span>
-                <span>⭐ 중요도: ${priorityText}</span>
+        <input type="checkbox" class="check-btn">
+        <div class="todo-content">
+            <div class="todo-info-text">
+                <strong>${text}</strong>
+                <div class="meta-info">📅 ${date} | ⭐ 중요도: ${priorityLabel}</div>
             </div>
         </div>
-        <button class="check-btn">✔</button>
     `;
 
-    li.querySelector('.check-btn').addEventListener('click', () => {
-        li.style.opacity = '0';
-        li.style.transform = 'translateX(20px)';
-        li.style.transition = '0.3s';
-        setTimeout(() => {
-            li.remove();
-        }, 300);
+    // 2. 체크박스로 완료/취소 토글
+    const checkbox = li.querySelector('.check-btn');
+    checkbox.addEventListener('change', () => {
+        li.classList.toggle('completed');
     });
 
-    todoList.appendChild(li);
+    // 4. 드래그 앤 드롭 이벤트 (순서 바꾸기)
+    li.addEventListener('dragstart', () => li.classList.add('dragging'));
+    li.addEventListener('dragend', () => li.classList.remove('dragging'));
 
+    todoList.appendChild(li);
     input.value = '';
-    dateInput.value = '';
-    priorityInput.value = '1';
+});
+
+// 순서 바꾸기 로직
+todoList.addEventListener('dragover', e => {
+    e.preventDefault();
+    const draggingItem = document.querySelector('.dragging');
+    const siblings = [...todoList.querySelectorAll('li:not(.dragging)')];
+    const nextSibling = siblings.find(sibling => e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2);
+    todoList.insertBefore(draggingItem, nextSibling);
 });
