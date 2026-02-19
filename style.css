@@ -68,4 +68,18 @@ input, select { background-color: var(--input-bg); color: var(--text-color); bor
 #add-btn { background: #333; color: white; cursor: pointer; font-weight: bold; border: none; padding: 10px; border-radius: 6px; font-size: 0.95rem; }
 
 ul { list-style: none; padding: 0; }
-li { background-color: var(--container-bg); border: 1px solid var(--border-color); margin-bottom: 8px; padding: 12px; display: flex; align
+li { background-color: var(--container-bg); border: 1px solid var(--border-color); margin-bottom: 8px; padding: 12px; display: flex; align-items: center; border-radius: 8px; }
+li.priority-1 { border-left: 6px solid #28a745; }
+li.priority-2 { border-left: 6px solid #ffc107; }
+li.priority-3 { border-left: 6px solid #dc3545; }
+li.completed { opacity: 0.4; }
+
+.todo-content { flex: 1; display: flex; justify-content: space-between; align-items: center; }
+.todo-text { font-weight: bold; font-size: 0.95rem; }
+.d-day { color: #dc3545; font-weight: bold; font-size: 0.85rem; }
+
+.hidden { display: none !important; }
+#delete-actions { margin-top: 15px; padding: 12px; background: rgba(220, 53, 69, 0.1); border-radius: 8px; text-align: center; }
+.action-buttons { display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
+#confirm-delete-btn { background: #dc3545; color: white; border: none; cursor: pointer; padding: 8px 18px; border-radius: 6px; font-weight: bold; }
+#cancel-delete-btn { background: #666; color: white; border: none; cursor: pointer; padding: 8px 18px; border-radius: 6px; font-weight: bold; }
