@@ -1,58 +1,29 @@
-const input = document.getElementById("todo-input");
-const addBtn = document.getElementById("add-btn");
-const list = document.getElementById("todo-list");
-const filterBtns = document.querySelectorAll(".filter button");
 
-let todos = [];
-let filter = "all";
+const input = document.getElementById('todo-input');
+const addBtn = document.getElementById('add-btn');
+const todoList = document.getElementById('todo-list');
 
-addBtn.addEventListener("click", addTodo);
-filterBtns.forEach(btn =>
-  btn.addEventListener("click", () => {
-    filter = btn.dataset.filter;
-    render();
-  })
-);
 
-function addTodo() {
-  if (input.value.trim() === "") return;
+addBtn.addEventListener('click', function() {
+    const text = input.value; // 입력창에 쓴 글자 가져오기
 
-  todos.push({
-    text: input.value,
-    done: false,
-  });
+    if (text === '') {
+        alert('할 일을 입력해주세요!');
+        return;
+    }
 
-  input.value = "";
-  render();
-}
 
-function toggleTodo(index) {
-  todos[index].done = !todos[index].done;
-  render();
-}
+    const li = document.createElement('li');
+    li.innerHTML = `
+        <span>${text}</span>
+        <button class="delete-btn">삭제</button>
+    `;
 
-function deleteTodo(index) {
-  todos.splice(index, 1);
-  render();
-}
-
-function render() {
-  list.innerHTML = "";
-
-  todos
-    .filter(todo => {
-      if (filter === "done") return todo.done;
-      if (filter === "active") return !todo.done;
-      return true;
-    })
-    .forEach((todo, index) => {
-      const li = document.createElement("li");
-      li.innerHTML = `
-        <span class="${todo.done ? "done" : ""}" onclick="toggleTodo(${index})">
-          ${todo.text}
-        </span>
-        <button onclick="deleteTodo(${index})">삭제</button>
-      `;
-      list.appendChild(li);
+ 
+    li.querySelector('.delete-btn').addEventListener('click', function() {
+        li.remove();
     });
-}
+
+    todoList.appendChild(li);
+    input.value = '';
+});
