@@ -6,48 +6,51 @@ const todoList = document.getElementById('todo-list');
 
 addBtn.addEventListener('click', () => {
     const text = input.value;
-    const date = dateInput.value;
+    const date = dateInput.value || "기한 없음";
     const priority = priorityInput.value;
     const priorityLabel = priority === '1' ? '낮음' : priority === '2' ? '보통' : '높음';
 
-    if (!text || !date) {
-        alert('내용과 날짜를 입력하세요.');
+    if (!text) {
+        alert('할 일을 입력해주세요.');
         return;
     }
 
     const li = document.createElement('li');
-    li.classList.add(`priority-${priority}`);
-    li.draggable = true; // 4. 순서 변경을 위한 드래그 설정
+    li.className = `priority-${priority}`;
+    li.draggable = true;
 
     li.innerHTML = `
-        <input type="checkbox" class="check-btn">
+        <div class="handle">≡</div>
+        <input type="checkbox" class="checkbox">
         <div class="todo-content">
-            <div class="todo-info-text">
-                <strong>${text}</strong>
-                <div class="meta-info">📅 ${date} | ⭐ 중요도: ${priorityLabel}</div>
-            </div>
+            <span class="todo-text">${text}</span>
+            <div class="todo-meta">마감: ${date} | 중요도: ${priorityLabel}</div>
         </div>
     `;
 
-    // 2. 체크박스로 완료/취소 토글
-    const checkbox = li.querySelector('.check-btn');
+    // 체크박스 토글 (완료/취소)
+    const checkbox = li.querySelector('.checkbox');
     checkbox.addEventListener('change', () => {
         li.classList.toggle('completed');
     });
 
-    // 4. 드래그 앤 드롭 이벤트 (순서 바꾸기)
+    // 드래그 앤 드롭 로직
     li.addEventListener('dragstart', () => li.classList.add('dragging'));
     li.addEventListener('dragend', () => li.classList.remove('dragging'));
 
     todoList.appendChild(li);
+
     input.value = '';
+    dateInput.value = '';
+    priorityInput.value = '1';
 });
 
-// 순서 바꾸기 로직
 todoList.addEventListener('dragover', e => {
     e.preventDefault();
     const draggingItem = document.querySelector('.dragging');
     const siblings = [...todoList.querySelectorAll('li:not(.dragging)')];
-    const nextSibling = siblings.find(sibling => e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2);
+    const nextSibling = siblings.find(sibling => {
+        return e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2;
+    });
     todoList.insertBefore(draggingItem, nextSibling);
 });
