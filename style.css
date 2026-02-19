@@ -87,7 +87,14 @@ li.completed { opacity: 0.4; }
 
 .todo-content { flex: 1; display: flex; justify-content: space-between; align-items: center; }
 .todo-text { font-weight: bold; font-size: 1rem; }
-.d-day { color: #dc3545; font-weight: bold; font-size: 0.9rem; }
+
+
+.d-day { 
+    color: #dc3545; 
+    font-weight: 800; 
+    font-size: 1.25rem !important; 
+    margin-left: 10px;
+}
 
 .hidden { display: none !important; }
 #delete-actions { margin-top: 15px; padding: 12px; background: rgba(220, 53, 69, 0.1); border-radius: 8px; text-align: center; }
