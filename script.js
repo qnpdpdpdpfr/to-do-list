@@ -3,6 +3,9 @@ const dateInput = document.getElementById('todo-date');
 const priorityInput = document.getElementById('todo-priority');
 const addBtn = document.getElementById('add-btn');
 const todoList = document.getElementById('todo-list');
+const filterBtns = document.querySelectorAll('.filter-btn');
+
+let currentFilter = 'all';
 
 function getDDay(targetDate) {
     if (!targetDate) return "";
@@ -10,12 +13,23 @@ function getDDay(targetDate) {
     today.setHours(0, 0, 0, 0);
     const target = new Date(targetDate);
     target.setHours(0, 0, 0, 0);
-    
     const diff = target - today;
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-    
     if (days === 0) return "D-Day";
     return days > 0 ? `D-${days}` : `D+${Math.abs(days)}`;
+}
+
+
+function applyFilter() {
+    const items = todoList.querySelectorAll('li');
+    items.forEach(item => {
+        const itemPriority = item.getAttribute('data-priority');
+        if (currentFilter === 'all' || itemPriority === currentFilter) {
+            item.style.display = 'flex';
+        } else {
+            item.style.display = 'none';
+        }
+    });
 }
 
 addBtn.addEventListener('click', () => {
@@ -31,6 +45,7 @@ addBtn.addEventListener('click', () => {
 
     const li = document.createElement('li');
     li.className = `priority-${priority}`;
+    li.setAttribute('data-priority', priority); 
     li.draggable = true;
 
     li.innerHTML = `
@@ -49,21 +64,33 @@ addBtn.addEventListener('click', () => {
     checkbox.addEventListener('change', () => {
         if (checkbox.checked) {
             li.classList.add('completed');
-            todoList.insertAdjacentElement('beforeend', li);
+            todoList.appendChild(li);
         } else {
             li.classList.remove('completed');
-            todoList.insertAdjacentElement('afterbegin', li);
+            todoList.prepend(li);
         }
+        applyFilter(); 
     });
 
     li.addEventListener('dragstart', () => li.classList.add('dragging'));
     li.addEventListener('dragend', () => li.classList.remove('dragging'));
 
-    todoList.insertAdjacentElement('afterbegin', li);
+    todoList.prepend(li);
+    applyFilter(); 
 
     input.value = '';
     dateInput.value = '';
     priorityInput.value = '1';
+});
+
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        applyFilter();
+    });
 });
 
 todoList.addEventListener('dragover', e => {
