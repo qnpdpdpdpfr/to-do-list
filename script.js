@@ -5,15 +5,32 @@ const addBtn = document.getElementById('add-btn');
 const todoList = document.getElementById('todo-list');
 const listFilter = document.getElementById('list-filter');
 const darkModeToggle = document.getElementById('dark-mode-toggle');
-
+const modeIcon = document.getElementById('mode-icon');
+const modeText = document.getElementById('mode-text');
 
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
-const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
 
-if (isDarkMode) {
-    document.body.setAttribute('data-theme', 'dark');
-    darkModeToggle.textContent = '☀️';
+function updateDarkModeUI(isDark) {
+    if (isDark) {
+        document.body.setAttribute('data-theme', 'dark');
+        modeIcon.textContent = '☀️';
+        modeText.textContent = '라이트모드';
+        localStorage.setItem('darkMode', 'enabled');
+    } else {
+        document.body.removeAttribute('data-theme');
+        modeIcon.textContent = '🌙';
+        modeText.textContent = '다크모드';
+        localStorage.setItem('darkMode', 'disabled');
+    }
 }
+
+const savedDarkMode = localStorage.getItem('darkMode') === 'enabled';
+updateDarkModeUI(savedDarkMode);
+
+darkModeToggle.addEventListener('click', () => {
+    const isNowDark = document.body.getAttribute('data-theme') !== 'dark';
+    updateDarkModeUI(isNowDark);
+});
 
 function saveTodos() {
     localStorage.setItem('todos', JSON.stringify(todos));
@@ -40,7 +57,6 @@ function renderTodos() {
 
         const li = document.createElement('li');
         li.className = `priority-${todo.priority} ${todo.completed ? 'completed' : ''}`;
-        li.setAttribute('data-priority', todo.priority);
         li.draggable = true;
 
         li.innerHTML = `
@@ -58,7 +74,6 @@ function renderTodos() {
         const checkbox = li.querySelector('.checkbox');
         checkbox.addEventListener('change', () => {
             todo.completed = checkbox.checked;
-            // 체크하면 배열의 끝으로 이동
             if (todo.completed) {
                 const item = todos.splice(index, 1)[0];
                 todos.push(item);
@@ -69,6 +84,9 @@ function renderTodos() {
             saveTodos();
             renderTodos();
         });
+
+        li.addEventListener('dragstart', () => li.classList.add('dragging'));
+        li.addEventListener('dragend', () => li.classList.remove('dragging'));
 
         todoList.appendChild(li);
     });
@@ -89,19 +107,16 @@ addBtn.addEventListener('click', () => {
     dateInput.value = '';
 });
 
-// 다크모드
-darkModeToggle.addEventListener('click', () => {
-    const isDark = document.body.getAttribute('data-theme') === 'dark';
-    if (isDark) {
-        document.body.removeAttribute('data-theme');
-        darkModeToggle.textContent = '🌙';
-        localStorage.setItem('darkMode', 'disabled');
-    } else {
-        document.body.setAttribute('data-theme', 'dark');
-        darkModeToggle.textContent = '☀️';
-        localStorage.setItem('darkMode', 'enabled');
-    }
+listFilter.addEventListener('change', renderTodos);
+
+todoList.addEventListener('dragover', e => {
+    e.preventDefault();
+    const draggingItem = document.querySelector('.dragging');
+    const siblings = [...todoList.querySelectorAll('li:not(.dragging)')];
+    const nextSibling = siblings.find(sibling => {
+        return e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2;
+    });
+    todoList.insertBefore(draggingItem, nextSibling);
 });
 
-listFilter.addEventListener('change', renderTodos);
 renderTodos();
