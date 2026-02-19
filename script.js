@@ -15,7 +15,7 @@ addBtn.addEventListener('click', () => {
     else if (priority === '3') priorityText = '높음';
 
     if (!text || !date) {
-        alert('할 일과 마감 기한을 모두 입력해주세요.');
+        alert('할 일과 마감 기한을 입력해주세요.');
         return;
     }
 
